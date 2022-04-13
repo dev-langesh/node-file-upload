@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="form">
+      <input type="file" id="file" name="image" />
+      <button type="submit">submit</button>
+      <p id="process"></p>
+    </form>
+
+    <script>
+      const inputFile = document.querySelector("#file");
+      const form = document.querySelector("#form");
+      const process = document.querySelector("#process");
+
+      form.onclick = (e) => {
+        inputFile.click();
+      };
+
+      inputFile.onchange = (e) => {
+        const filename = e.target.files[0].name;
+        console.log(filename);
+        uploadFile();
+      };
+
+      function uploadFile() {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "upload", true);
+
+        xhr.upload.addEventListener("progress", (e) => {
+          console.log(Math.ceil((e.loaded / e.total) * 100));
+        });
+
+        const formData = new FormData(form);
+        xhr.send(formData);
+      }
+    </script>
+  </body>
+</html>
